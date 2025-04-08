@@ -4,7 +4,9 @@ import (
 	"awesomeWeb/cmd/pkg/config"
 	"awesomeWeb/cmd/pkg/models"
 	"awesomeWeb/cmd/pkg/render"
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -74,6 +76,26 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 	w.Write([]byte(fmt.Sprintf("start: %s\nend: %s", start, end)))
+}
+
+type jsonResponse struct {
+	Ok      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+// AvailabilityJson handle request for json
+func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		Ok:      false,
+		Message: "Available ",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "    ")
+	if err != nil {
+		log.Println(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
 }
 
 // Contact renders the contact page
