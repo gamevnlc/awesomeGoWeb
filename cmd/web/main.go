@@ -3,7 +3,9 @@ package main
 import (
 	"awesomeWeb/internal/config"
 	"awesomeWeb/internal/handlers"
+	"awesomeWeb/internal/models"
 	"awesomeWeb/internal/render"
+	"encoding/gob"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"log"
@@ -18,6 +20,9 @@ var session *scs.SessionManager
 // Home is the home page handler
 
 func main() {
+	//What am i going to put in the session
+	gob.Register(models.Reservation{})
+
 	//Change this to true when in production
 	app.InProduction = false
 
