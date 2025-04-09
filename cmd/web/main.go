@@ -3,6 +3,7 @@ package main
 import (
 	"awesomeWeb/internal/config"
 	"awesomeWeb/internal/handlers"
+	"awesomeWeb/internal/helpers"
 	"awesomeWeb/internal/models"
 	"awesomeWeb/internal/render"
 	"encoding/gob"
@@ -10,12 +11,15 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
 var portNumber = ":8080"
 var app config.AppConfig
 var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 // Home is the home page handler
 
@@ -37,11 +41,17 @@ func main() {
 }
 
 func run() error {
-	//What am i going to put in the session
+	//What am I going to put in the session
 	gob.Register(models.Reservation{})
 
 	//Change this to true when in production
 	app.InProduction = false
+
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
@@ -61,6 +71,7 @@ func run() error {
 	handlers.NewHandler(repo)
 
 	render.NewTemplates(&app)
+	helpers.NewHelpers(&app)
 
 	return nil
 }
