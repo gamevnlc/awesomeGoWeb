@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"awesomeWeb/internal/config"
+	"awesomeWeb/internal/form"
 	"awesomeWeb/internal/models"
 	"awesomeWeb/internal/render"
 	"encoding/json"
@@ -53,7 +54,14 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: form.New(nil),
+	})
+}
+
+// PostReservation handler the posting of reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+
 }
 
 // Generals renders the room page
