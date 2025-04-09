@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"awesomeWeb/cmd/pkg/config"
-	"awesomeWeb/cmd/pkg/models"
-	"awesomeWeb/cmd/pkg/render"
+	"awesomeWeb/internal/config"
+	"awesomeWeb/internal/models"
+	"awesomeWeb/internal/render"
 	"encoding/json"
 	"fmt"
 	"log"

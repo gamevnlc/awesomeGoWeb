@@ -1,9 +1,9 @@
 package main
 
 import (
-	"awesomeWeb/cmd/pkg/config"
-	"awesomeWeb/cmd/pkg/handlers"
-	"awesomeWeb/cmd/pkg/render"
+	"awesomeWeb/internal/config"
+	"awesomeWeb/internal/handlers"
+	"awesomeWeb/internal/render"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"log"

@@ -1,8 +1,8 @@
 package render
 
 import (
-	"awesomeWeb/cmd/pkg/config"
-	"awesomeWeb/cmd/pkg/models"
+	"awesomeWeb/internal/config"
+	"awesomeWeb/internal/models"
 	"bytes"
 	"github.com/justinas/nosurf"
 	"html/template"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"awesomeWeb/cmd/pkg/config"
-	"awesomeWeb/cmd/pkg/handlers"
+	"awesomeWeb/internal/config"
+	"awesomeWeb/internal/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
