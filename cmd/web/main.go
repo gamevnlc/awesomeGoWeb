@@ -20,6 +20,23 @@ var session *scs.SessionManager
 // Home is the home page handler
 
 func main() {
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(fmt.Sprintf("Listening on port %s", portNumber))
+
+	src := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err = src.ListenAndServe()
+	log.Fatal(err)
+}
+
+func run() error {
 	//What am i going to put in the session
 	gob.Register(models.Reservation{})
 
@@ -45,13 +62,5 @@ func main() {
 
 	render.NewTemplates(&app)
 
-	fmt.Println(fmt.Sprintf("Listening on port %s", portNumber))
-
-	src := &http.Server{
-		Addr:    portNumber,
-		Handler: routes(&app),
-	}
-
-	err = src.ListenAndServe()
-	log.Fatal(err)
+	return nil
 }
