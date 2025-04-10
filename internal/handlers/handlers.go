@@ -3,11 +3,11 @@ package handlers
 import (
 	"awesomeWeb/internal/config"
 	"awesomeWeb/internal/form"
+	"awesomeWeb/internal/helpers"
 	"awesomeWeb/internal/models"
 	"awesomeWeb/internal/render"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -32,24 +32,13 @@ func NewHandler(r *Repository) {
 }
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	remoteIp := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIp)
-
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
 // About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	//Perform some logic
-	stringMap := make(map[string]string)
-	stringMap["test"] = "Hello again"
-	remoteIp := m.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIp
-
 	//send some data to template
-	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
-	})
+	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
 // Reservation renders the make a reservation page and displays form
@@ -68,7 +57,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(w, err)
 		return
 	}
 
@@ -137,7 +126,7 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 
 	out, err := json.MarshalIndent(resp, "", "    ")
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(w, err)
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
@@ -152,7 +141,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		log.Println("reservation not found")
+		m.App.ErrorLog.Println("Cannot find reservation from session")
 		m.App.Session.Put(r.Context(), "error", "reservation not found")
 		http.Redirect(w, r, "/ ", http.StatusTemporaryRedirect)
 		return
