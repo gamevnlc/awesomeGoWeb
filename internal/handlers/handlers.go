@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"awesomeWeb/internal/config"
+	"awesomeWeb/internal/driver"
 	"awesomeWeb/internal/form"
 	"awesomeWeb/internal/helpers"
 	"awesomeWeb/internal/models"
 	"awesomeWeb/internal/render"
+	"awesomeWeb/internal/repository"
+	"awesomeWeb/internal/repository/dbrepo"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -17,12 +20,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo create a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
