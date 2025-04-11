@@ -208,14 +208,23 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 }
 
 type jsonResponse struct {
-	Ok      bool   `json:"ok"`
+	OK      bool   `json:"ok"`
 	Message string `json:"message"`
 }
 
 // AvailabilityJson handle request for json
 func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
+
+	sd := r.Form.Get("start_date")
+	ed := r.Form.Get("end_date")
+	roomID, _ := strconv.Atoi(r.Form.Get("room_id"))
+	layout := "2006-01-02"
+	startDate, _ := time.Parse(layout, sd)
+	endDate, _ := time.Parse(layout, ed)
+	available, _ := m.DB.SearchAvailabilityByDatesByRoomID(startDate, endDate, roomID)
+
 	resp := jsonResponse{
-		Ok:      false,
+		OK:      available,
 		Message: "Available ",
 	}
 
