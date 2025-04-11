@@ -3,7 +3,6 @@ package dbrepo
 import (
 	"awesomeWeb/internal/models"
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -80,7 +79,7 @@ func (m *postgresDBRepo) SearchAvailabilityByDatesByRoomID(start time.Time, end 
 		    room_id = $1 and
 		    $2 < end_date and $3 > start_date;
 	`
-	fmt.Println(query)
+
 	row := m.DB.QueryRowContext(ctx, query, roomID, start, end)
 	err := row.Scan(&numRows)
 
