@@ -231,7 +231,7 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 
 	resp := jsonResponse{
 		OK:        available,
-		Message:   "xxxx",
+		Message:   "",
 		RoomID:    strconv.Itoa(roomID),
 		StartDate: sd,
 		EndDate:   ed,
