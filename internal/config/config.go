@@ -1,6 +1,7 @@
 package config
 
 import (
+	"awesomeWeb/internal/models"
 	"github.com/alexedwards/scs/v2"
 	"html/template"
 	"log"
@@ -14,4 +15,5 @@ type AppConfig struct {
 	InProduction  bool
 	Session       *scs.SessionManager
 	ErrorLog      *log.Logger
+	MailChan      chan models.MailData
 }
