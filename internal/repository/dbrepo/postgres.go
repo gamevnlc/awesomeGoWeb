@@ -196,6 +196,7 @@ func (m *postgresDBRepo) UpdateUser(u models.User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 
+	//goland:noinspection SqlDialectInspection,SqlNoDataSourceInspection
 	query := `
 		update users set first_name = $1, last_name = $2, email = $3, access_level = $4, updated_at = $5
 	`
@@ -222,6 +223,7 @@ func (m *postgresDBRepo) Authenticate(email string, testPassword string) (int, s
 	var id int
 	var hashedPassword string
 
+	//goland:noinspection SqlDialectInspection,SqlNoDataSourceInspection
 	query := `select id, password from users where email = $1`
 	row := m.DB.QueryRowContext(ctx, query, email)
 	err := row.Scan(&id, &hashedPassword)

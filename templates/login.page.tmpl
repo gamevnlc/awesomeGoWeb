@@ -6,8 +6,10 @@
         <div class="col">
             <h1>This is the Login page</h1>
 
-            <form action="">
+            <form action="/user/login" method="post">
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="form-group mt-3">
+
                     <label for="email">Email:</label>
                     {{with .Form.Errors.Get "email"}}
                     <label class="text-danger">{{.}}</label>
