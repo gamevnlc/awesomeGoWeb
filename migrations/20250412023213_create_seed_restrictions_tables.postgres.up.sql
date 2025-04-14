@@ -1,2 +1,0 @@
-INSERT INTO "public"."restrictions" VALUES (1, 'Reservation', '2025-04-10 22:34:46', '2025-04-10 22:34:49');
-INSERT INTO "public"."restrictions" VALUES (1, 'Owen Block', '2025-04-10 22:34:46', '2025-04-10 22:34:49');
