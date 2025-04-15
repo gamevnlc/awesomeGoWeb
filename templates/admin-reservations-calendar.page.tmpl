@@ -8,6 +8,8 @@
     {{$now := index .Data "now"}}
     {{$rooms := index .Data "rooms"}}
     {{$dim := index .IntMap "days_in_month"}}
+    {{$curMonth := index .StringMap "this_month"}}
+    {{$curYear := index .StringMap "this_month_year"}}
     <h3 class="text-center">{{formatDate $now "January"}} {{formatDate $now "2006"}} </h3>
     <div class="col-12 d-flex justify-content-between">
         <div>
