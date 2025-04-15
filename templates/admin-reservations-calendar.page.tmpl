@@ -5,13 +5,39 @@
 {{end}}
 
 {{define "content"}}
-    <h3>{{index .StringMap "this_month"}}/{{index .StringMap "this_month_year"}}</h3>
-<div class="col-12 d-flex justify-content-between">
-    <div>
-        <a href="/admin/reservations-calendar?y{{index .StringMap "last_month_year"}}&m={{index .StringMap "last_month"}}" class="btn btn-sm btn-outline-secondary">&lt;&lt;</a>
+    {{$now := index .Data "now"}}
+    {{$rooms := index .Data "rooms"}}
+    {{$dim := index .IntMap "days_in_month"}}
+    <h3 class="text-center">{{formatDate $now "January"}} {{formatDate $now "2006"}} </h3>
+    <div class="col-12 d-flex justify-content-between">
+        <div>
+            <a href="/admin/reservation-calendar?y={{index .StringMap "last_month_year"}}&m={{index .StringMap "last_month"}}" class="btn btn-sm btn-outline-secondary">&lt;&lt;</a>
+        </div>
+        <div>
+            <a href="/admin/reservation-calendar?y={{index .StringMap "next_month_year"}}&m={{index .StringMap "next_month"}}" class="btn btn-sm btn-outline-secondary">&gt;&gt;</a>
+        </div>
     </div>
-    <div>
-        <a href="/admin/reservations-calendar?y{{index .StringMap "next_month_year"}}&m={{index .StringMap "next_month"}}" class="btn btn-sm btn-outline-secondary">&gt;&gt;</a>
+
+    <div class="table-responsive">
+        {{range $rooms}}
+        {{$roomId := .ID}}
+        <h4>{{.RoomName}}</h4>
+        <table class="table table-bordered  my-1">
+            <tr class="table-dark">
+                {{range $index := iterate $dim}}
+                    <td class="text-center p-1">
+                        {{add $index 1}}
+                    </td>
+                {{end}}
+            </tr>
+             <tr>
+                 {{range $index := iterate $dim}}
+                     <td class="text-center p-1">
+                         <input type="checkbox">
+                     </td>
+                 {{end}}
+             </tr>
+        </table>
+        {{end}}
     </div>
-</div>
 {{end}}
