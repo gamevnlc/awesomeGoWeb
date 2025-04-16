@@ -619,6 +619,42 @@ func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *htt
 
 	//process blocks
 
+	rooms, err := m.DB.AllRooms()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	formData := form.New(r.PostForm)
+	for _, x := range rooms {
+		// Get the block map from the session. Loop through entire map if we have any an entry in the map
+		// that does not exist in our posted data and if the restriction id > 0 then it is a block we need to remove
+		curMap := m.App.Session.Get(r.Context(), fmt.Sprintf("block_map_%d", x.ID)).(map[string]int)
+		for name, value := range curMap {
+			// ok will be false if the value is not in the map
+			if val, ok := curMap[name]; ok {
+				// only pay attention to values > 0 and that are not in the form post
+				// the rest are just placeholders for days without blocks
+				if val > 0 {
+					attr := fmt.Sprintf("remove_block_%d_%s", x.ID, name)
+					if !formData.Has(attr) {
+						//delete the restriction id
+						log.Println("Would delete block", value)
+					}
+				}
+			}
+		}
+	}
+
+	// now handle new blocks
+	for name, _ := range r.PostForm {
+		if strings.HasPrefix(name, "add_block") {
+			exploded := strings.Split(name, "_")
+			roomId, _ := strconv.Atoi(exploded[2])
+			//insert a new block
+			log.Println("Would insert block for room id ", roomId, "for date", exploded[3])
+		}
+	}
+
 	url := fmt.Sprintf("/admin/reservation-calendar?y=%d&m=%d", year, month)
 	http.Redirect(w, r, url, http.StatusSeeOther)
 }
